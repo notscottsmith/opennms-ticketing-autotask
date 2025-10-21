@@ -1,0 +1,41 @@
+# Autotask Ticketing Plugin Configuration
+# Place this file in $OPENNMS_HOME/etc/com.company.autotaskticketplugin.cfg
+
+# Autotask REST API Configuration
+autotask.baseUrl=https://webservices6.autotask.net/ATServicesRest/v1.0/
+autotask.apiIntegrationCode=YOUR_API_INTEGRATION_CODE
+autotask.userName=YOUR_USERNAME
+autotask.secret=YOUR_SECRET
+
+# Default Ticket Settings (Required)
+autotask.defaultCompanyId=YOUR_COMPANY_ID
+autotask.defaultQueueId=YOUR_QUEUE_ID
+autotask.defaultContactId=YOUR_CONTACT_ID
+
+# Optional Default Settings
+autotask.defaultTicketCategory=1
+autotask.defaultSource=6
+autotask.defaultTicketType=1
+autotask.defaultPriority=3
+autotask.defaultResourceId=
+
+# Plugin Behavior Settings
+autotask.autoClose=false
+autotask.updateDescription=true
+autotask.timeoutSeconds=30
+
+# Configuration Instructions:
+# 1. Replace YOUR_API_INTEGRATION_CODE with your Autotask API Integration Code
+# 2. Replace YOUR_USERNAME with your Autotask username
+# 3. Replace YOUR_SECRET with your Autotask secret key
+# 4. Replace YOUR_COMPANY_ID with your default company ID for tickets
+# 5. Replace YOUR_QUEUE_ID with your default queue ID for tickets
+# 6. Replace YOUR_CONTACT_ID with your default contact ID for tickets
+# 7. Adjust other default values as needed for your Autotask configuration
+# 8. Restart OpenNMS after configuration changes
+
+# Common Autotask Field Values:
+# Status: 1=New, 5=In Progress, 8=Complete, 9=Cancelled
+# Priority: 1=Critical, 2=High, 3=Medium, 4=Low
+# Ticket Type: 1=Service Request, 2=Incident, 3=Problem, 4=Change Request
+# Source: 1=Email, 2=Phone, 3=Web, 4=Portal, 5=Field Service, 6=API

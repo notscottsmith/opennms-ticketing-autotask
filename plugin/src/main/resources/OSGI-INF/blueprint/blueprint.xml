@@ -1,0 +1,109 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
+                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+                http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0
+                http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+    <!-- Configuration stored in $OPENNMS_HOME/etc/com.company.autotaskticketplugin.cfg file -->
+    <cm:property-placeholder id="autotaskticketpluginProperties" persistent-id="com.company.autotaskticketplugin" update-strategy="reload">
+        <cm:default-properties>
+            <!-- Autotask API Configuration -->
+            <cm:property name="autotask.baseUrl" value="https://webservices6.autotask.net/ATServicesRest/v1.0/" />
+            <cm:property name="autotask.apiIntegrationCode" value="" />
+            <cm:property name="autotask.userName" value="" />
+            <cm:property name="autotask.secret" value="" />
+            
+            <!-- Default Ticket Settings -->
+            <cm:property name="autotask.defaultCompanyId" value="" />
+            <cm:property name="autotask.defaultTicketCategory" value="1" />
+            <cm:property name="autotask.defaultQueueId" value="" />
+            <cm:property name="autotask.defaultSource" value="6" />
+            <cm:property name="autotask.defaultTicketType" value="1" />
+            <cm:property name="autotask.defaultPriority" value="3" />
+            <cm:property name="autotask.defaultContactId" value="" />
+            <cm:property name="autotask.defaultResourceId" value="" />
+            
+            <!-- Plugin Behavior Settings -->
+            <cm:property name="autotask.autoClose" value="false" />
+            <cm:property name="autotask.updateDescription" value="true" />
+            <cm:property name="autotask.timeoutSeconds" value="30" />
+        </cm:default-properties>
+    </cm:property-placeholder>
+
+    <!-- Pull in service implementations from the OSGi registry -->
+    <reference id="alarmDao" interface="org.opennms.integration.api.v1.dao.AlarmDao" availability="optional"/>
+    <reference id="edgeDao" interface="org.opennms.integration.api.v1.dao.EdgeDao" availability="optional"/>
+    <reference id="eventForwarder" interface="org.opennms.integration.api.v1.events.EventForwarder" availability="optional"/>
+
+    <!-- Build configuration object from properties -->
+    <bean id="autotaskConfiguration" class="com.company.autotaskticketplugin.AutotaskTicketingConfiguration">
+        <property name="baseUrl" value="${autotask.baseUrl}" />
+        <property name="apiIntegrationCode" value="${autotask.apiIntegrationCode}" />
+        <property name="userName" value="${autotask.userName}" />
+        <property name="secret" value="${autotask.secret}" />
+        <property name="defaultCompanyId" value="${autotask.defaultCompanyId}" />
+        <property name="defaultTicketCategory" value="${autotask.defaultTicketCategory}" />
+        <property name="defaultQueueId" value="${autotask.defaultQueueId}" />
+        <property name="defaultSource" value="${autotask.defaultSource}" />
+        <property name="defaultTicketType" value="${autotask.defaultTicketType}" />
+        <property name="defaultPriority" value="${autotask.defaultPriority}" />
+        <property name="defaultContactId" value="${autotask.defaultContactId}" />
+        <property name="defaultResourceId" value="${autotask.defaultResourceId}" />
+        <property name="autoClose" value="${autotask.autoClose}" />
+        <property name="updateDescription" value="${autotask.updateDescription}" />
+        <property name="timeoutSeconds" value="${autotask.timeoutSeconds}" />
+    </bean>
+
+    <!-- Build the Autotask Ticketing Plugin -->
+    <bean id="autotaskTicketingPlugin" class="com.company.autotaskticketplugin.AutotaskTicketingPlugin" 
+          init-method="init" destroy-method="destroy">
+        <property name="config" ref="autotaskConfiguration"/>
+    </bean>
+
+    <!-- Expose the ticketing plugin as a TicketingPlugin service -->
+    <service interface="org.opennms.integration.api.v1.ticketing.TicketingPlugin" ref="autotaskTicketingPlugin">
+        <service-properties>
+            <entry key="name" value="autotask" />
+            <entry key="description" value="Autotask PSA Ticketing Plugin" />
+        </service-properties>
+    </service>
+
+    <!-- Build our legacy forwarder bean for backwards compatibility (optional) -->
+    <bean id="apiClient" class="com.company.autotaskticketplugin.ApiClient">
+        <argument value="${autotask.baseUrl}"/>
+        <argument value="${autotask.apiIntegrationCode}"/>
+    </bean>
+
+    <bean id="alarmForwarder" class="com.company.autotaskticketplugin.AlarmForwarder">
+        <argument ref="apiClient"/>
+        <argument ref="eventForwarder"/>
+    </bean>
+    <!-- Expose the forwarder as a AlarmLifecycleListener so we get callbacks -->
+    <service interface="org.opennms.integration.api.v1.alarms.AlarmLifecycleListener" ref="alarmForwarder"/>
+    <!-- Expose the forwarder directly for access from our shell commands -->
+    <service interface="com.company.autotaskticketplugin.AlarmForwarder" ref="alarmForwarder"/>
+
+    <!-- Build our topology forwarder bean -->
+    <bean id="topologyForwarder" class="com.company.autotaskticketplugin.TopologyForwarder">
+        <argument ref="apiClient"/>
+        <argument ref="edgeDao"/>
+    </bean>
+    <!-- Expose the forwarder directly for access from our shell commands -->
+    <service interface="com.company.autotaskticketplugin.TopologyForwarder" ref="topologyForwarder"/>
+
+    <!-- Build and expose the JAX-RS annotated webhook handler.
+         This will automatically mount the endpoint over the REST API. -->
+    <bean id="webhookHandlerImpl" class="com.company.autotaskticketplugin.WebhookHandlerImpl" />
+    <service interface="com.company.autotaskticketplugin.WebhookHandler" ref="webhookHandlerImpl">
+        <service-properties>
+            <entry key="application-path" value="/rest" />
+        </service-properties>
+    </service>
+
+    <!-- Expose our custom event definitions bundled in the .jar -->
+    <service interface="org.opennms.integration.api.v1.config.events.EventConfExtension">
+        <bean class="com.company.autotaskticketplugin.EventConfExtension"/>
+    </service>
+
+</blueprint>
