@@ -1,11 +1,11 @@
-package com.company.autotask;
+package org.opennms.plugins.autotask;
 
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import com.company.autotask.model.Alert;
-import com.company.autotask.model.Topology;
+import org.opennms.plugins.autotask.model.Alert;
+import org.opennms.plugins.autotask.model.Topology;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -94,4 +94,3 @@ public class ApiClient {
     }
 
 }
-

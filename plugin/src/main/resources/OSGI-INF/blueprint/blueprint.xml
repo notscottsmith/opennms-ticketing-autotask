@@ -5,8 +5,8 @@
                 http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0
                 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
 
-    <!-- Configuration stored in $OPENNMS_HOME/etc/com.company.autotaskticketplugin.cfg file -->
-    <cm:property-placeholder id="autotaskticketpluginProperties" persistent-id="com.company.autotaskticketplugin" update-strategy="reload">
+    <!-- Configuration stored in $OPENNMS_HOME/etc/autotask.properties file -->
+    <cm:property-placeholder id="autotaskProperties" persistent-id="autotask" update-strategy="reload">
         <cm:default-properties>
             <!-- Autotask API Configuration -->
             <cm:property name="autotask.baseUrl" value="https://webservices6.autotask.net/ATServicesRest/v1.0/" />
@@ -37,7 +37,7 @@
     <reference id="eventForwarder" interface="org.opennms.integration.api.v1.events.EventForwarder" availability="optional"/>
 
     <!-- Build configuration object from properties -->
-    <bean id="autotaskConfiguration" class="com.company.autotaskticketplugin.AutotaskTicketingConfiguration">
+    <bean id="autotaskConfiguration" class="org.opennms.plugins.autotask.AutotaskTicketingConfiguration">
         <property name="baseUrl" value="${autotask.baseUrl}" />
         <property name="apiIntegrationCode" value="${autotask.apiIntegrationCode}" />
         <property name="userName" value="${autotask.userName}" />
@@ -56,7 +56,7 @@
     </bean>
 
     <!-- Build the Autotask Ticketing Plugin -->
-    <bean id="autotaskTicketingPlugin" class="com.company.autotaskticketplugin.AutotaskTicketingPlugin" 
+    <bean id="autotaskTicketingPlugin" class="org.opennms.plugins.autotask.AutotaskTicketingPlugin" 
           init-method="init" destroy-method="destroy">
         <property name="config" ref="autotaskConfiguration"/>
     </bean>
@@ -70,32 +70,32 @@
     </service>
 
     <!-- Build our legacy forwarder bean for backwards compatibility (optional) -->
-    <bean id="apiClient" class="com.company.autotaskticketplugin.ApiClient">
+    <bean id="apiClient" class="org.opennms.plugins.autotask.ApiClient">
         <argument value="${autotask.baseUrl}"/>
         <argument value="${autotask.apiIntegrationCode}"/>
     </bean>
 
-    <bean id="alarmForwarder" class="com.company.autotaskticketplugin.AlarmForwarder">
+    <bean id="alarmForwarder" class="org.opennms.plugins.autotask.AlarmForwarder">
         <argument ref="apiClient"/>
         <argument ref="eventForwarder"/>
     </bean>
     <!-- Expose the forwarder as a AlarmLifecycleListener so we get callbacks -->
     <service interface="org.opennms.integration.api.v1.alarms.AlarmLifecycleListener" ref="alarmForwarder"/>
     <!-- Expose the forwarder directly for access from our shell commands -->
-    <service interface="com.company.autotaskticketplugin.AlarmForwarder" ref="alarmForwarder"/>
+    <service interface="org.opennms.plugins.autotask.AlarmForwarder" ref="alarmForwarder"/>
 
     <!-- Build our topology forwarder bean -->
-    <bean id="topologyForwarder" class="com.company.autotaskticketplugin.TopologyForwarder">
+    <bean id="topologyForwarder" class="org.opennms.plugins.autotask.TopologyForwarder">
         <argument ref="apiClient"/>
         <argument ref="edgeDao"/>
     </bean>
     <!-- Expose the forwarder directly for access from our shell commands -->
-    <service interface="com.company.autotaskticketplugin.TopologyForwarder" ref="topologyForwarder"/>
+    <service interface="org.opennms.plugins.autotask.TopologyForwarder" ref="topologyForwarder"/>
 
     <!-- Build and expose the JAX-RS annotated webhook handler.
          This will automatically mount the endpoint over the REST API. -->
-    <bean id="webhookHandlerImpl" class="com.company.autotaskticketplugin.WebhookHandlerImpl" />
-    <service interface="com.company.autotaskticketplugin.WebhookHandler" ref="webhookHandlerImpl">
+    <bean id="webhookHandlerImpl" class="org.opennms.plugins.autotask.WebhookHandlerImpl" />
+    <service interface="org.opennms.plugins.autotask.WebhookHandler" ref="webhookHandlerImpl">
         <service-properties>
             <entry key="application-path" value="/rest" />
         </service-properties>
@@ -103,7 +103,7 @@
 
     <!-- Expose our custom event definitions bundled in the .jar -->
     <service interface="org.opennms.integration.api.v1.config.events.EventConfExtension">
-        <bean class="com.company.autotaskticketplugin.EventConfExtension"/>
+        <bean class="org.opennms.plugins.autotask.EventConfExtension"/>
     </service>
 
 </blueprint>

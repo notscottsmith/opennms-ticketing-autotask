@@ -1,4 +1,4 @@
-package com.company.autotask.shell;
+package org.opennms.plugins.autotask.shell;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -8,10 +8,10 @@ import org.apache.karaf.shell.api.action.Command;
 import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 
-import com.company.autotask.TopologyForwarder;
-import com.company.autotask.model.Topology;
+import org.opennms.plugins.autotask.TopologyForwarder;
+import org.opennms.plugins.autotask.model.Topology;
 
-@Command(scope = "opennms-autotask-ticket-plugin", name = "push-topology", description = "Push the topology")
+@Command(scope = "autotask", name = "push-topology", description = "Push the network topology to Autotask")
 @Service
 public class TopologyCommand implements Action {
 
@@ -38,4 +38,3 @@ public class TopologyCommand implements Action {
         return null;
     }
 }
-

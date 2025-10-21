@@ -1,4 +1,4 @@
-package com.company.autotask.model;
+package org.opennms.plugins.autotask.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

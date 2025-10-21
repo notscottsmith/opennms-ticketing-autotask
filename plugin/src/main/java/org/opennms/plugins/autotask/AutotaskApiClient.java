@@ -1,11 +1,11 @@
-package com.company.autotask;
+package org.opennms.plugins.autotask;
 
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import com.company.autotask.model.AutotaskTicket;
-import com.company.autotask.model.AutotaskTicketResponse;
+import org.opennms.plugins.autotask.model.AutotaskTicket;
+import org.opennms.plugins.autotask.model.AutotaskTicketResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

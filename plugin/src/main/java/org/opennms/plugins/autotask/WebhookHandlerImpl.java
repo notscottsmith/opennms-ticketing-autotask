@@ -1,4 +1,4 @@
-package com.company.autotask;
+package org.opennms.plugins.autotask;
 
 import javax.ws.rs.core.Response;
 
@@ -19,5 +19,3 @@ public class WebhookHandlerImpl implements WebhookHandler {
         return Response.ok().build();
     }
 }
-
-

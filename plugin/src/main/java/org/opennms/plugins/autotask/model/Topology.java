@@ -1,4 +1,4 @@
-package com.company.autotask.model;
+package org.opennms.plugins.autotask.model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,4 +59,3 @@ public class Topology {
         return Objects.hash(id, links);
     }
 }
-

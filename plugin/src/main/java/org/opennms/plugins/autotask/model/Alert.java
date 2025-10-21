@@ -1,4 +1,4 @@
-package com.company.autotask.model;
+package org.opennms.plugins.autotask.model;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -126,4 +126,3 @@ public class Alert {
         }
     }
 }
-

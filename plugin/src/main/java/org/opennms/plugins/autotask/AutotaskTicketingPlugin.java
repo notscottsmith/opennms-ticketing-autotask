@@ -1,4 +1,4 @@
-package com.company.autotask;
+package org.opennms.plugins.autotask;
 
 import org.opennms.integration.api.v1.ticketing.Ticket;
 import org.opennms.integration.api.v1.ticketing.TicketingPlugin;
@@ -6,8 +6,8 @@ import org.opennms.integration.api.v1.ticketing.immutables.ImmutableTicket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.company.autotask.model.AutotaskTicket;
-import com.company.autotask.model.AutotaskTicketResponse;
+import org.opennms.plugins.autotask.model.AutotaskTicket;
+import org.opennms.plugins.autotask.model.AutotaskTicketResponse;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

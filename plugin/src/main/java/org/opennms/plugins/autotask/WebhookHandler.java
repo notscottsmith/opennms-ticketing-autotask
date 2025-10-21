@@ -1,4 +1,4 @@
-package com.company.autotask;
+package org.opennms.plugins.autotask;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -8,7 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("autotask-ticket-plugin")
+@Path("autotask")
 public interface WebhookHandler {
 
     @GET
@@ -21,4 +21,3 @@ public interface WebhookHandler {
     @Consumes({MediaType.APPLICATION_JSON})
     Response handleWebhook(String body);
 }
-

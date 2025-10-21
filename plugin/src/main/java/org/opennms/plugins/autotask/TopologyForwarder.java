@@ -1,4 +1,4 @@
-package com.company.autotask;
+package org.opennms.plugins.autotask;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,8 +14,8 @@ import org.opennms.integration.api.v1.model.TopologySegment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.company.autotask.model.Link;
-import com.company.autotask.model.Topology;
+import org.opennms.plugins.autotask.model.Link;
+import org.opennms.plugins.autotask.model.Topology;
 
 public class TopologyForwarder {
     private static final Logger LOG = LoggerFactory.getLogger(TopologyForwarder.class);
@@ -88,4 +88,3 @@ public class TopologyForwarder {
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[]{})).thenApply(val -> topologies);
     }
 }
-

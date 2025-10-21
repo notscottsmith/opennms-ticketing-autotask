@@ -1,5 +1,5 @@
 # Autotask Ticketing Plugin Configuration
-# Place this file in $OPENNMS_HOME/etc/com.company.autotaskticketplugin.cfg
+# Place this file in $OPENNMS_HOME/etc/autotask.properties
 
 # Autotask REST API Configuration
 autotask.baseUrl=https://webservices6.autotask.net/ATServicesRest/v1.0/

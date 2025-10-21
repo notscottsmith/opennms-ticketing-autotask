@@ -1,4 +1,4 @@
-package com.company.autotask.model;
+package org.opennms.plugins.autotask.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -37,4 +37,3 @@ public class Link {
         this.target = target;
     }
 }
-

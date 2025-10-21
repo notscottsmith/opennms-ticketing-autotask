@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.opennms.plugins.opa.ticketing.autotask</artifactId>
     <groupId>org.opennms.plugins.opa.ticketing</groupId>
-    <name>OpenNMS :: OPA :: Ticketing :: Autotask :: Parent</name>
-    
+    <name>OpenNMS :: Plugins :: Autotask :: Parent</name>
+
     <description>An OpenNMS ticketing API plugin for Autotask PSA</description>
     <packaging>pom</packaging>
 

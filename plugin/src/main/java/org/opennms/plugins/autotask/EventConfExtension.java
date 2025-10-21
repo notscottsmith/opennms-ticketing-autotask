@@ -1,4 +1,4 @@
-package com.company.autotask;
+package org.opennms.plugins.autotask;
 
 import java.util.List;
 
@@ -17,4 +17,3 @@ public class EventConfExtension implements org.opennms.integration.api.v1.config
         return classpathEventDefinitionLoader.getEventDefinitions();
     }
 }
-

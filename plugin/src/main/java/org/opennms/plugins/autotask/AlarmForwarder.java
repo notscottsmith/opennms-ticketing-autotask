@@ -1,4 +1,4 @@
-package com.company.autotask;
+package org.opennms.plugins.autotask;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
-import com.company.autotask.model.Alert;
+import org.opennms.plugins.autotask.model.Alert;
 
 public class AlarmForwarder implements AlarmLifecycleListener {
     private static final Logger LOG = LoggerFactory.getLogger(AlarmForwarder.class);
@@ -114,4 +114,3 @@ public class AlarmForwarder implements AlarmLifecycleListener {
         return metrics;
     }
 }
-

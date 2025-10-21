@@ -1,4 +1,4 @@
-package com.company.autotask.shell;
+package org.opennms.plugins.autotask.shell;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,9 +9,9 @@ import org.apache.karaf.shell.api.action.lifecycle.Service;
 
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
-import com.company.autotask.AlarmForwarder;
+import org.opennms.plugins.autotask.AlarmForwarder;
 
-@Command(scope = "opennms-autotask-ticket-plugin", name = "stats", description = "Show statistics.")
+@Command(scope = "autotask", name = "stats", description = "Show statistics for Autotask plugin.")
 @Service
 public class StatsCommand implements Action {
 
@@ -29,4 +29,3 @@ public class StatsCommand implements Action {
         return null;
     }
 }
-
